@@ -13,13 +13,9 @@
 void get_buf(float *buf)
 {
     int i=0;
-    // while( (buf[i]=getchar())!='\n' && i<1024)
-    //     i++;
     for (i = 0; i < MEM_SIZE / 4; i++)
         buf [i] = i * 2;
-        // printf("%f ", buf[i]);
 }
-
 
 int main(  )
 {

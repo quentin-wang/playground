@@ -10,12 +10,11 @@
 # to our lab for analysis. Thanks!
 #
 # Marc-Etienne M.Léveillé <leve...@eset.com>
-#
+# 
 
-from ctypes import *
-import ctypes
 import sys
 import numpy
+from ctypes import *
 
 IPC_RMID = 0
 IPC_PRIVATE = 0
@@ -30,8 +29,8 @@ except:
 
 # void* memcpy( void *dest, const void *src, size_t count );
 memcpy = libc.memcpy
-memcpy.restype = ctypes.c_void_p
-memcpy.argtypes = (ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t)
+memcpy.restype = c_void_p
+memcpy.argtypes = (c_void_p, c_void_p, c_size_t)
 
 shmget = rt.shmget
 shmget.restype = c_int
@@ -44,20 +43,14 @@ shmat.argtypes = (c_int, POINTER(c_void_p), c_int)
 SHM_SIZE = (512 * 1024)
 SHM_KEY = 0x123456
 OUTFILE="dump.bin"
-#define MEM_SIZE (512 * 1024)
-
-
 
 shmid = shmget(SHM_KEY, SHM_SIZE, 0o666)
 if shmid < 0:
     print ("System not infected")
 else:
     addr = shmat(shmid, None, 0)
-    # pyarray = numpy.arange(100, dtype="float32").reshape(10, 10)
     pyarray = numpy.zeros(SHM_SIZE / 4, dtype="float32")
-    # print(pyarray.nbytes)
     memcpy (pyarray.ctypes.data, addr, pyarray.nbytes)
-    # print(pyarray)
 
     # f=open(OUTFILE, 'wb')    #f = file(OUTFILE, 'wb')
     # f.write(string_at(addr,SHM_SIZE))

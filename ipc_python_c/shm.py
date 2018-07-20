@@ -13,7 +13,7 @@
 # 
 
 import sys
-import numpy
+import numpy as np
 from ctypes import *
 
 IPC_RMID = 0
@@ -49,7 +49,7 @@ if shmid < 0:
     print ("System not infected")
 else:
     addr = shmat(shmid, None, 0)
-    pyarray = numpy.zeros(SHM_SIZE / 4, dtype="float32")
+    pyarray = np.zeros(SHM_SIZE / 4, dtype="float32")
     memcpy (pyarray.ctypes.data, addr, pyarray.nbytes)
 
     # f=open(OUTFILE, 'wb')    #f = file(OUTFILE, 'wb')

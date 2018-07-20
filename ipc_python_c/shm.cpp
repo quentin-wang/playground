@@ -6,23 +6,22 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#define MY_SHM_ID 0x123456
+#define SHM_KEY 0x123456
+#define SHM_SIZE  (512 * 1024)
 
-#define MEM_SIZE  (512 * 1024)
-
-void get_buf(float *buf)
+void write_buf(float *buf)
 {
     int i=0;
-    for (i = 0; i < MEM_SIZE / 4; i++)
+    for (i = 0; i < SHM_SIZE / 4; i++)
         buf [i] = i * 2;
 }
 
 int main(  )
 {
-    printf("page size=%d\n", getpagesize());
     int shmid=0, ret=0;
-    shmid = shmget(MY_SHM_ID, MEM_SIZE, 0666|IPC_CREAT);
-    
+    shmid = shmget(SHM_KEY, SHM_SIZE, 0666|IPC_CREAT);
+    // printf("page size=%d\n", getpagesize());
+
     if (shmid > 0)
     {
         printf("Create a shared memory segment %d\n", shmid);
@@ -45,9 +44,9 @@ int main(  )
     if ((int)(buf=(char*)shmat(shmid, NULL, 0)) == -1)
     {
         perror("Share memary can't get pointer\n");
-            exit(1);
+        exit(1);
     }
-    get_buf((float *)buf);
+    write_buf((float *)buf);
 
     // ret = shmctl(shmid, IPC_RMID, 0);
     

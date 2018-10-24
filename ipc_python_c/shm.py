@@ -60,4 +60,5 @@ else:
 
 if __name__ == '__main__':
     print('here is stable branch')
+    print('here is stable branch')
     pass
